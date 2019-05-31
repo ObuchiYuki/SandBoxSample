@@ -18,6 +18,7 @@
 		B6445F25229D1A7E002ECD90 /* TP_japanese_house_1.scn in Resources */ = {isa = PBXBuildFile; fileRef = B6445F24229D1A7E002ECD90 /* TP_japanese_house_1.scn */; };
 		B6445F31229D3CCD002ECD90 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B6445F30229D3CCD002ECD90 /* Shaders.metal */; };
 		B6B3839B229D56BE00886FD4 /* TP_Floar_1.scn in Resources */ = {isa = PBXBuildFile; fileRef = B6B3839A229D56BE00886FD4 /* TP_Floar_1.scn */; };
+		B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD94B822A11B1B00664F30 /* MySceneController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		B6445F24229D1A7E002ECD90 /* TP_japanese_house_1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_japanese_house_1.scn; sourceTree = "<group>"; };
 		B6445F30229D3CCD002ECD90 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B6B3839A229D56BE00886FD4 /* TP_Floar_1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_Floar_1.scn; sourceTree = "<group>"; };
+		B6CD94B822A11B1B00664F30 /* MySceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				B6445F0E229D1980002ECD90 /* ViewController.swift */,
+				B6CD94B822A11B1B00664F30 /* MySceneController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				B6445F0F229D1980002ECD90 /* ViewController.swift in Sources */,
 				B6445F21229D1A24002ECD90 /* Ex+SceneKit.swift in Sources */,
 				B6445F0D229D1980002ECD90 /* AppDelegate.swift in Sources */,
+				B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */,
 				B6445F23229D1A24002ECD90 /* ESSceneController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,7 +358,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuki.SandboxSample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topica.SandboxSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -373,7 +377,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuki.SandboxSample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.topica.SandboxSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

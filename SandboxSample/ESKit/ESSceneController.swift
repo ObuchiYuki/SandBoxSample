@@ -113,6 +113,8 @@ open class ESSceneController: UIResponder {
     open func didContacting(nodeA:SCNNode, nodeB:SCNNode) {}
     open func didContactEnd(nodeA:SCNNode, nodeB:SCNNode) {}
     
+    open func didHitTestEnd(_ results:[SCNHitTestResult]) {}
+    
     /// 次のESSceneControllerにシーンを渡します。
     public final func present(to sceneController: ESSceneController,with transition:SKTransition,incomingPoint node:SCNNode?=nil, completion: (()->Void)?=nil) {
         let view = _esViewController.scnView
