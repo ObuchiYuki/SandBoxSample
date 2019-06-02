@@ -31,10 +31,25 @@ open class ESSceneController: UIResponder {
         return scene.rootNode
     }
     
+    /// Sceneのカメラです。
+    /// ノードとしてのカメラは、ESSceneController.cameraNodeに格納されます。
+    public lazy var camera = SCNCamera()
+    
+    /// Sceneの環境光です。
+    /// ノードとしてのライトは、ESSceneController.ambientLightNodeに格納されます。
+    public lazy var ambientLight:SCNLight = {
+        let light = SCNLight()
+        
+        light.type = .ambient
+        light.color = UIColor.lightGray
+        
+        return light
+    }()
+    
     /// Sceneのカメラです。初期位置は`SCNVector3.zero`です。
-    public var camera:SCNNode = {
+    public lazy var cameraNode:SCNNode = {
         let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
+        cameraNode.camera = self.camera
         cameraNode.position = .zero
         return cameraNode
     }()
@@ -53,15 +68,11 @@ open class ESSceneController: UIResponder {
         return lightNode
     }()
     
-    /// Sceneの環境ライトです。初期位置は`.zero`です。
-    public var ambientLightNode:SCNNode = {
+    /// Sceneの環境ライトノードです。初期位置は`.zero`です。
+    public lazy var ambientLightNode:SCNNode = {
         let ambientLightNode = SCNNode()
-        let light = SCNLight()
         
-        light.type = .ambient
-        light.color = UIColor.lightGray
-        
-        ambientLightNode.light = light
+        ambientLightNode.light = self.ambientLight
         return ambientLightNode
     }()
     
@@ -75,6 +86,15 @@ open class ESSceneController: UIResponder {
     
     // ================================================================
     // MARK: - Methods
+    
+    /// 画面上を指が動いた時のヒットテストを有効にします。
+    /// SCNView.allowCameraControle は自動的に false になります。
+    public func enableDragHitTest() {
+        self._esViewController.enableDragHitTest()
+    }
+    public func disablDragHitTest() {
+        self._esViewController.disablDragHitTest()
+    }
     
     // ===============================
     // MAARK: - Overridable Methods
@@ -142,7 +162,7 @@ open class ESSceneController: UIResponder {
         self._displayLink.add(to: .main, forMode: .common)
         
         // Defaultノード読み込み
-        self.rootNode.addChildNode(camera)
+        self.rootNode.addChildNode(cameraNode)
         self.rootNode.addChildNode(lightNode)
         self.rootNode.addChildNode(ambientLightNode)
     }

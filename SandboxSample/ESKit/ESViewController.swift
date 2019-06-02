@@ -21,8 +21,22 @@ open class ESViewController: UIViewController {
     
     // SCNViewを返します。
     public var scnView:SCNView{
-        return self.view as! SCNView
+        guard let scnView = self.view as? SCNView else {
+            fatalError("Error in converting UIViewController.view to SCNView. You cannot set other UIView in ESViewController.view.")
+        }
+        return scnView
     }
+    
+    //==================================================================
+    // MARK: - Private Properties -
+    
+    /// タップ時のヒットテストを行うために使用します。
+    /// タップ時のヒットテストは常時有効です。
+    private lazy var taprayTraceGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleRayTrace(_:)))
+    
+    /// ドラッグ時のヒットテストを行うために使用します。
+    /// ドラッグ時のヒットテストは　enableDragHitTest() を呼び出すまで無効です。
+    private lazy var dragRayTraceGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleRayTrace(_:)))
     
     //==================================================================
     // MARK: - Methods -
@@ -34,37 +48,68 @@ open class ESViewController: UIViewController {
     }
     
     //==================================================================
+    // MARK: - Internal Methods -
+    
+    /// allowsCameraControl状態保持用
+    private var _oldAllowsCameraControlStateForDragHitTest:Bool?
+    
+    /// ドラッグによるヒットテストを有効にします。
+    /// 非常に重い処理であるので、常時有効にはしないでください。
+    /// SCNView.allowsCameraControl は自動的に無効になります。
+    internal func enableDragHitTest() {
+        self.scnView.addGestureRecognizer(dragRayTraceGestureRecognizer)
+        
+        self._oldAllowsCameraControlStateForDragHitTest = scnView.allowsCameraControl
+        self.scnView.allowsCameraControl = false
+    }
+    
+    /// ドラッグによるヒットテストを無効にします。
+    /// ドラッグによるヒットテストは重い処理であるため、必要な処理が終了したら無効かしてください。
+    /// SCNView.allowsCameraControl は自動的に enableDragHitTest() を呼び出す前の状況に戻ります。
+    internal func disablDragHitTest() {
+        scnView.removeGestureRecognizer(dragRayTraceGestureRecognizer)
+        
+        if let oldAllowsCameraControlStateForDragHitTest = _oldAllowsCameraControlStateForDragHitTest {
+            self.scnView.allowsCameraControl = oldAllowsCameraControlStateForDragHitTest
+        }
+    }
+    //==================================================================
     // MARK: - Private Properties -
     
+    /// 配下のSceneControllerです。
     private var _sceneController:ESSceneController!
     
     //==================================================================
     // MARK: - Override Methods -
     
-    /// Load View.
+    /// Viewを読み込みます。 override した場合は必ずsuper.loadView()を呼んでください。
+    /// view に SCNView をセットします。
+    /// StoryBoardでSCNViewを設定していた場合は、新規にViewは作られません。
     override open func loadView() {
         super.loadView()
         
+        // StoryBoardによって設定されていた場合の分岐
         if !(self.view is SCNView){
             self.view = SCNView()
         }
+        
+        // SceneController作成
         guard let sceneController = getSceneController() else {
             fatalError("GetSceneController must be overrided to return ESSceneController.")
         }
-        self._sceneController = sceneController
         
+        self._sceneController = sceneController
         self.scnView.scene = sceneController.scene
     }
     
+    /// タップによるヒットテスト判定の登録を行います。
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        let rayTraceTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlerayTraceTap(_:)))
-        scnView.addGestureRecognizer(rayTraceTapGestureRecognizer)
-        
+        scnView.addGestureRecognizer(taprayTraceGestureRecognizer)
     }
     
-    @objc private func handlerayTraceTap(_ gestureRecognize: UIGestureRecognizer) {
+    @objc private func handleRayTrace(_ gestureRecognize: UIGestureRecognizer) {
         let position = gestureRecognize.location(in: scnView)
         let hitResults = scnView.hitTest(position, options: [:])
         
