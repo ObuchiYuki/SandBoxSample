@@ -27,6 +27,9 @@ open class ESViewController: UIViewController {
         return scnView
     }
     
+    /// 配下のSceneControllerです。
+    var sceneController:ESSceneController!
+    
     //==================================================================
     // MARK: - Private Properties -
     
@@ -74,12 +77,6 @@ open class ESViewController: UIViewController {
         }
     }
     //==================================================================
-    // MARK: - Private Properties -
-    
-    /// 配下のSceneControllerです。
-    private var _sceneController:ESSceneController!
-    
-    //==================================================================
     // MARK: - Override Methods -
     
     /// Viewを読み込みます。 override した場合は必ずsuper.loadView()を呼んでください。
@@ -98,7 +95,7 @@ open class ESViewController: UIViewController {
             fatalError("GetSceneController must be overrided to return ESSceneController.")
         }
         
-        self._sceneController = sceneController
+        self.sceneController = sceneController
         self.scnView.scene = sceneController.scene
     }
     
@@ -113,21 +110,21 @@ open class ESViewController: UIViewController {
         let position = gestureRecognize.location(in: scnView)
         let hitResults = scnView.hitTest(position, options: [:])
         
-        self._sceneController.didHitTestEnd(hitResults)
+        self.sceneController.didHitTestEnd(hitResults)
     }
     
     //==================================================================
     // MARK: - UIResponder Override Metheods -
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self._sceneController.touchesBegan(touches, with: event)
+        self.sceneController.touchesBegan(touches, with: event)
     }
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self._sceneController.touchesEnded(touches, with: event)
+        self.sceneController.touchesEnded(touches, with: event)
     }
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self._sceneController.touchesMoved(touches, with: event)
+        self.sceneController.touchesMoved(touches, with: event)
     }
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self._sceneController.touchesCancelled(touches, with: event)
+        self.sceneController.touchesCancelled(touches, with: event)
     }
 }

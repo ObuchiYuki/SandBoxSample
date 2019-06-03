@@ -9,53 +9,75 @@
 import SceneKit
 
 class MySceneController: ESSceneController {
-    lazy var material = createMaterial()
+    let level = TSLevel()
     
-    func createFloar(at point:CGPoint) {
-        let floar = TSBlock.normalFloar.createNode()
-        
-        floar.position = [Float(point.x), -0.1, Float(point.y)]
-        floar.eulerAngles.y = Float(Int.random(in: 0...3)) * (.pi/2)
-        
-        self.rootNode.addChildNode(floar)
+    var cameraStartPosition = SCNVector3.zero
+    var touchStartPosition = CGPoint.zero
+    
+    func didPanMove(with range:CGFloat) {
+        let t:SCNVector3 = [cameraStartPosition.x - Float(range), cameraStartPosition.y, cameraStartPosition.z + Float(range)]
+        cameraNode.position = t
     }
-    func createHouse(at point:CGPoint) {
-        let house = SCNNode(named: "TP_japanese_house_1.scn")!
-        house.position = [Float(point.x), 0, Float(point.y)]
-        
-        house.childNodes.forEach{
-            $0.geometry?.materials = [self.material]
-        }
-        self.rootNode.addChildNode(house)
+    func createHouse(x: Int, y:Int) {
+        let position = TSVector3(x: x, y: 1, z: y)
+        level.placeBlock(.japaneseHouse, at: position)
     }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else {return}
+        
+        let location = touch.location(in: touch.view!)
+        didPanMove(with: (location.x - touchStartPosition.x) / 60)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else {return}
+        
+        let location = touch.location(in: touch.view!)
+        cameraStartPosition = cameraNode.position
+        touchStartPosition = location
+    }
+    
+    override func didHitTestEnd(_ results: [SCNHitTestResult]) {
+        guard let result = results.first else { return }
+        let coordinate = result.worldCoordinates
+        
+        createHouse(x: Int(coordinate.x), y: Int(coordinate.z))
+    }
+    
     override func sceneDidLoad() {
         setupSkybox()
+        level.delagate = self
         
         lightNode.light?.castsShadow = true
         lightNode.light?.shadowSampleCount = 4
         
         camera.usesOrthographicProjection = true
-        cameraNode.eulerAngles = [-.pi/12, .pi/4, 0]
-        cameraNode.position = [10 ,5, 10]
+        camera.orthographicScale = 10
+        camera.zNear = 0
         
-        for xIndex in -5...5 {
-            for yIndex in -5...5 {
-                createFloar(at: CGPoint(x: 5 * xIndex, y: 5 * yIndex))
+        
+        cameraNode.eulerAngles = [-.pi/12, .pi/4, 0]
+        cameraNode.position = [30, 9, 24]
+        
+        for x in 0...5 {
+            for z in 0...5 {
+                level.placeBlock(.normalFloar, at: TSVector3(x: x * 5, y: 0, z: z * 5))
             }
         }
     }
-    private func roundValue(_ value:Float, radix:Int = 5) -> Int {
-        let rounded = round(Double(value)/Double(radix))
-        return Int(rounded) * radix
-    }
+}
 
-    override func didHitTestEnd(_ results: [SCNHitTestResult]) {
+extension MySceneController:TSLevelDelegate {
+    func didPlaceBlock(at anchor: TSVector3) {
+        guard let node = level.getBlockNode(at: anchor) else { return }
+        node.position = anchor.scnVector3
+        rootNode.addChildNode(node)
+    }
+    func didDestoryBlock(at anchor: TSVector3) {
+        guard let node = level.getBlockNode(at: anchor) else { return }
         
-        guard let result = results.first else {return}
-        
-        let cordinate = result.worldCoordinates
-        let point = CGPoint(x: roundValue(cordinate.x), y: roundValue(cordinate.z))
-        createHouse(at: point)
+        node.removeFromParentNode()
     }
 }
 

@@ -12,7 +12,7 @@ import SceneKit
 // (横幅、高さ、奥行き)
 extension TSBlock {
     /// 空気 (10, 10, 10)
-    static let air = TSBlock()
+    static let air:TSBlock = TSBlock.init()
     
     /// 床（通常）(50, 10, 50)
     static let normalFloar = TSBlock(nodeNamed: "TP_normal_floar", textureNamed: "TP_normal_floar")

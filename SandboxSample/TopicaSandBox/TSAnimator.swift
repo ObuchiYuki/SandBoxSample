@@ -12,10 +12,10 @@ class TSAnimator {
     // TODO: 実装する。
     static let shared = TSAnimator()
     
-    func animateDestroyBlock(at point:ESVector3,_ completion:@escaping ()->Void) {
+    func animateDestroyBlock(at point:TSVector3,_ completion:@escaping ()->Void) {
         
     }
-    func animateTapBlock(at point:ESVector3, _ completion:@escaping ()->Void) {
+    func animateTapBlock(at point:TSVector3, _ completion:@escaping ()->Void) {
         
     }
 }

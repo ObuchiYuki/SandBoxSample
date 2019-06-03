@@ -1,5 +1,12 @@
 import Foundation
 
+func measure(_ block:()->Void){
+    print("Start Mesurement")
+    let start = Date()
+    block()
+    print(Date().timeIntervalSince(start))
+}
+
 // MARK: - String Extesions in Foundation
 extension String{
     public func removed(by charset:CharacterSet) -> String{

@@ -27,10 +27,10 @@ open class TSBlock {
     public let isAir:Bool
     
     /// Sandbox座標系におけるアイテムのサイズです。
-    public lazy var size:ESVector3 = {
-        if isAir { return .unit * 10 }
+    public lazy var size:TSVector3 = {
+        if isAir { return .unit }
         
-        return ESVector3(self.createNode().size)
+        return TSVector3(self.createNode().size)
     }()
     
     //========================================================================
@@ -60,19 +60,19 @@ open class TSBlock {
     //==================================
     // MARK: - TSBlock Overridable Methods -
     
-    open func willPlaced(at point:ESVector3) {}
-    open func didPlaced(at point:ESVector3) {}
-    open func canPlace(at point:ESVector3) -> Bool{return true}
+    open func willPlaced(at point:TSVector3) {}
+    open func didPlaced(at point:TSVector3) {}
+    open func canPlace(at point:TSVector3) -> Bool {return true}
 
-    open func willDestroy(at point:ESVector3) {}
-    open func didDestroy(at point:ESVector3) {}
-    open func canDestroy(at point:ESVector3) -> Bool{return false}
+    open func willDestroy(at point:TSVector3) {}
+    open func didDestroy(at point:TSVector3) {}
+    open func canDestroy(at point:TSVector3) -> Bool {return true}
     
-    open func didTouch(at point:ESVector3) {}
-    open func shouldShrinkAnimateWhenTouched(at point:ESVector3) -> Bool {return false}
+    open func didTouch(at point:TSVector3) {}
+    open func shouldShrinkAnimateWhenTouched(at point:TSVector3) -> Bool {return false}
     
-    open func didNearBlockUpdate(_ nearBlock:TSBlock, at point:ESVector3) {}
-    open func didRandomEventRoopCome(at point:ESVector3) {}
+    open func didNearBlockUpdate(_ nearBlock:TSBlock, at point:TSVector3) {}
+    open func didRandomEventRoopCome(at point:TSVector3) {}
     
     //========================================================================
     // MARK: - TSBlock Constructor -

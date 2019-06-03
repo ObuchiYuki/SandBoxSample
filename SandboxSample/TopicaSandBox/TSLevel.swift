@@ -8,32 +8,43 @@
 
 import SceneKit
 
+protocol TSLevelDelegate:class {
+    func didPlaceBlock(at anchor:TSVector3)
+    func didDestoryBlock(at anchor:TSVector3)
+}
+
 /**
  次元の抽象化クラスです。
  */
 class TSLevel {
+    
+    /// 地上の場所を表します。
+    static let ground = TSLevel()
+    
+    weak var delagate:TSLevelDelegate?
+    
     // ==============================================================================
     // MARK: - Private Property -
     
     /// 次元のマップです。各元に 0 〜 65535 のサイズを持ちます。
     /// これは次元の座標と異なります。編集は直接でなく
     /// _getBlock(at:_) _setBlock(at:_) を用いてください。
-    private lazy var _map = _constructMap()
+    private lazy var _anchorBlockMap = _constructFillMap()
     
     /// ノードのマップです。作られたタイミングで、それぞれ初期化されます。
     private lazy var _nodemap = _constructNodeMap()
     
     /// ブロックのアンカー（原点）のマップです。
     /// 画面に配置する場合これをmapしてください。
-    private lazy var _anchormap = [ESVector3]()
+    private lazy var _anchormap = Set<TSVector3>()
     
     // ==============================================================================
     // MARK: - Public Methods -
     
     /// オブジェクトのSCNNodeを返します。空気の場合はnilを返します。
-    func getBlockNode(at point:ESVector3) -> SCNNode? {
+    func getBlockNode(at point:TSVector3) -> SCNNode? {
         let (x, y, z) = _convertVectorToIndex(point)
-        let block = _map[x][y][z]
+        let block = _anchorBlockMap[x][y][z]
         let blockNode = _nodemap[x][y][z]
         
         if let blockNode = blockNode { //すでに生成済みならば
@@ -51,83 +62,78 @@ class TSLevel {
     }
     
     /// オブジェクトのTSBlockを返します。
-    func getBlock(at point:ESVector3) -> TSBlock{
+    func getBlock(at point:TSVector3) -> TSBlock{
         
         return _getBlock(at: point)
     }
-    func getAnchors() -> [ESVector3]{
+    func getAnchors() -> [TSVector3]{
         
-        return _anchormap
+        return Array(_anchormap)
     }
     /// ブロックを設置します。
     /// 設置できない場合は設置しません。canPlaceBlock(at:_)で調べてから使用してください。
-    public func placeBlock(_ block:TSBlock, at point:ESVector3) {
-        guard canPlaceBlock(block, at: point) else {
-            return debugPrint("Cannot place block at \(point). Check if can place block with canPlaceBlock.")
+    public func placeBlock(_ block:TSBlock, at anchor:TSVector3) {
+        // TODO: - fillmapを確認する
+        guard canPlaceBlock(block, at: anchor) else {
+            return debugPrint("Cannot place block at \(anchor). Check if can place block with canPlaceBlock.")
         }
-        let oldBlock = _getBlock(at: point)
+        let oldBlock = _getBlock(at: anchor)
         // 破壊と創造
         
-        oldBlock.willDestroy(at: point)
-        block.willPlaced(at: point)
+        oldBlock.willDestroy(at: anchor)
+        block.willPlaced(at: anchor)
         
-        _setBlock(block, at: point)
+        _setBlock(block, at: anchor)
         
-        oldBlock.didDestroy(at: point)
-        block.didPlaced(at: point)
+        delagate?.didDestoryBlock(at: anchor)
+        delagate?.didPlaceBlock(at: anchor)
+        
+        oldBlock.didDestroy(at: anchor)
+        block.didPlaced(at: anchor)
     }
     
     /// ブロックが置けるかどうかを確かめます。
-    public func canPlaceBlock(_ block:TSBlock,at point:ESVector3) -> Bool {
+    public func canPlaceBlock(_ block:TSBlock,at point:TSVector3) -> Bool {
         let oldBlock = _getBlock(at: point)
         return block.canPlace(at: point) && oldBlock.canDestroy(at: point)
     }
     
     /// ブロックを破壊します。
     /// 破壊できない場合は破壊しません。canDestoryBlock(at:_)で調べてから使用してください。
-    public func destroyBlock(at point:ESVector3) {
-        
+    public func destroyBlock(at point:TSVector3) {
+        _anchormap.remove(point)
         placeBlock(.air, at: point)
     }
     
     /// ブロックが破壊できるかどうかを確かめます。
-    public func canDestoryBlock(at point:ESVector3) -> Bool {
+    public func canDestoryBlock(at point:TSVector3) -> Bool {
         return canPlaceBlock(.air, at: point)
     }
     // ==============================================================================
     // MARK: - Private Methods -
     
     /// マスのブロックを返します。
-    private func _getBlock(at point:ESVector3) -> TSBlock {
+    private func _getBlock(at point:TSVector3) -> TSBlock {
         let (x, y, z) = _convertVectorToIndex(point)
-        return _map[x][y][z]
+        return _anchorBlockMap[x][y][z]
     }
     
-    private func _setBlock(_ block:TSBlock, at point:ESVector3) {
-        _anchormap.append(point)
-        _fillMap(with: block, from: point)
+    private func _setBlock(_ block:TSBlock, at point:TSVector3) {
+        let (x, y, z) = _convertVectorToIndex(point)
+        _anchormap.insert(point)
+        _anchorBlockMap[x][y][z] = block
     }
-    private func _fillMap(with block:TSBlock, from point:ESVector3) {
-          let (x, y, z) = _convertVectorToIndex(point)
-        let bsize = block.size
-        for xIndex in 0...bsize.x {
-            for yIndex in 0...bsize.y {
-                for zIndex in 0...bsize.z {
-                    _map[x + xIndex][y + yIndex][z + zIndex] = block
-                }
-            }
-        }
-    }
-    private func _convertVectorToIndex(_ vector:ESVector3) -> (x:Int, y:Int, z:Int) {
-        let r = vector + ESVector3.unit * 32768
-        return (r.x, r.y, r.z)
+    
+    private func _convertVectorToIndex(_ v:TSVector3) -> (x:Int, y:Int, z:Int) {
+        let modefier = 32768
+        return (v.x + modefier, v.y + modefier, v.z + modefier)
     }
     
     private func _constructNodeMap() -> [[[SCNNode?]]]{
         let size = Int(UInt16.max)
         return Array(repeating:Array(repeating:Array(repeating: nil, count: size), count: size), count: size)
     }
-    private func _constructMap() -> [[[TSBlock]]]{
+    private func _constructFillMap() -> [[[TSBlock]]]{
         let size = Int(UInt16.max)
         return Array(repeating:Array(repeating:Array(repeating: TSBlock.air, count: size), count: size), count: size)
     }

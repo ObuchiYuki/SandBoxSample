@@ -31,9 +31,10 @@
 		B6445F31229D3CCD002ECD90 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B6445F30229D3CCD002ECD90 /* Shaders.metal */; };
 		B647852822A3BC0C005D37AF /* TSBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852722A3BC0C005D37AF /* TSBlock.swift */; };
 		B647852A22A3F114005D37AF /* Ex+TSBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852922A3F114005D37AF /* Ex+TSBlock.swift */; };
-		B647852C22A3F3A6005D37AF /* ESVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852B22A3F3A6005D37AF /* ESVector3.swift */; };
+		B647852C22A3F3A6005D37AF /* TSVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852B22A3F3A6005D37AF /* TSVector3.swift */; };
 		B647852E22A3F7C6005D37AF /* TSLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852D22A3F7C6005D37AF /* TSLevel.swift */; };
 		B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD94B822A11B1B00664F30 /* MySceneController.swift */; };
+		B6F0F37B22A4D59100384715 /* Ex+TSVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,9 +64,10 @@
 		B6445F30229D3CCD002ECD90 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B647852722A3BC0C005D37AF /* TSBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSBlock.swift; sourceTree = "<group>"; };
 		B647852922A3F114005D37AF /* Ex+TSBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+TSBlock.swift"; sourceTree = "<group>"; };
-		B647852B22A3F3A6005D37AF /* ESVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ESVector3.swift; sourceTree = "<group>"; };
+		B647852B22A3F3A6005D37AF /* TSVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSVector3.swift; sourceTree = "<group>"; };
 		B647852D22A3F7C6005D37AF /* TSLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSLevel.swift; sourceTree = "<group>"; };
 		B6CD94B822A11B1B00664F30 /* MySceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneController.swift; sourceTree = "<group>"; };
+		B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+TSVector3.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,7 +197,8 @@
 			children = (
 				B647852722A3BC0C005D37AF /* TSBlock.swift */,
 				B647852922A3F114005D37AF /* Ex+TSBlock.swift */,
-				B647852B22A3F3A6005D37AF /* ESVector3.swift */,
+				B647852B22A3F3A6005D37AF /* TSVector3.swift */,
+				B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */,
 				B647852D22A3F7C6005D37AF /* TSLevel.swift */,
 				B6426F3422A4A64700B7B452 /* TSAnimator.swift */,
 			);
@@ -289,7 +292,7 @@
 				B6426F3522A4A64700B7B452 /* TSAnimator.swift in Sources */,
 				B6445F21229D1A24002ECD90 /* Ex+SceneKit.swift in Sources */,
 				B63A408D22A4B2A70033EF09 /* RMViewAnimator.swift in Sources */,
-				B647852C22A3F3A6005D37AF /* ESVector3.swift in Sources */,
+				B647852C22A3F3A6005D37AF /* TSVector3.swift in Sources */,
 				B63A409422A4B2A70033EF09 /* Ex+UIColor.swift in Sources */,
 				B6445F0D229D1980002ECD90 /* AppDelegate.swift in Sources */,
 				B63A409222A4B2A70033EF09 /* EX+SpriteKit.swift in Sources */,
@@ -297,6 +300,7 @@
 				B647852E22A3F7C6005D37AF /* TSLevel.swift in Sources */,
 				B6445F23229D1A24002ECD90 /* ESSceneController.swift in Sources */,
 				B63A409322A4B2A70033EF09 /* Ex+UIKit.swift in Sources */,
+				B6F0F37B22A4D59100384715 /* Ex+TSVector3.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
