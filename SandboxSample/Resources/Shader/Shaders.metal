@@ -3,11 +3,11 @@ using namespace metal;
 
 #include <SceneKit/scn_metal>
 
-struct MyNodeBuffer {
+struct TSNodeBuffer {
     float4x4 modelViewProjectionTransform;
 };
 
-struct MyVertexInput {
+struct TSVertexInput {
     float3 position [[attribute(SCNVertexSemanticPosition)]];
     float2 texCoords [[attribute(SCNVertexSemanticTexcoord0)]];
 };
@@ -18,9 +18,9 @@ struct SimpleVertex
     float2 texCoords;
 };
 
-vertex SimpleVertex myVertex(MyVertexInput in [[stage_in]],
+vertex SimpleVertex TSVertex(TSVertexInput in [[stage_in]],
                              constant SCNSceneBuffer& scn_frame [[buffer(0)]],
-                             constant MyNodeBuffer& scn_node [[buffer(1)]])
+                             constant TSNodeBuffer& scn_node [[buffer(1)]])
 {
     SimpleVertex vert;
     vert.position = scn_node.modelViewProjectionTransform * float4(in.position, 1.0);
@@ -30,7 +30,7 @@ vertex SimpleVertex myVertex(MyVertexInput in [[stage_in]],
 }
 
 
-fragment half4 myFragment(SimpleVertex in [[stage_in]],
+fragment half4 TSFragment(SimpleVertex in [[stage_in]],
                           texture2d<float, access::sample> diffuseTexture [[texture(0)]])
 {
     constexpr sampler sampler2d(coord::normalized, filter::linear, address::repeat);

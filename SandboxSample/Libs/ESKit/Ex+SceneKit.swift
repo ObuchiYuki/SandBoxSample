@@ -57,6 +57,10 @@ public extension SCNVector3 {
     static func - (left:SCNVector3, right:SCNVector3) -> SCNVector3 {
         return SCNVector3(left.x - right.x, left.y - right.y, left.z - right.z)
     }
+    static func * <T: BinaryInteger>(left:SCNVector3, right:T) -> SCNVector3 {
+        let fr = Float(right)
+        return SCNVector3(left.x * fr, left.y * fr, left.z * fr)
+    }
 }
 
 extension SCNVector3:ExpressibleByArrayLiteral {
