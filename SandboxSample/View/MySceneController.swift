@@ -23,9 +23,6 @@ class MySceneController: ESSceneController {
         let vector = recognizer.translation(in: scnView)
         self.gestutreHelper.panned(to: vector)
     }
-    func handleSliderMovement(with value:Float) {
-        self.camera.focalLength = CGFloat(value)
-    }
     
     func createHouse(x: Int, y:Int) {
         let position = TSVector3(x, 1, y)

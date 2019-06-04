@@ -155,6 +155,12 @@ open class ESSceneController :NSObject{
     /// この処理は処理がある時のみ呼ばれます。
     open func didRenderScene() {}
     
+    open func loadDefaultObject() {
+        self.rootNode.addChildNode(cameraNode)
+        self.rootNode.addChildNode(directionalLightNode)
+        self.rootNode.addChildNode(ambientLightNode)
+    }
+    
     // ============================================================== //
     // MARK: - Event Methods -
     
@@ -218,9 +224,7 @@ open class ESSceneController :NSObject{
         self._displayLink.add(to: .main, forMode: .common)
         
         // Defaultノード読み込み
-        self.rootNode.addChildNode(cameraNode)
-        self.rootNode.addChildNode(directionalLightNode)
-        self.rootNode.addChildNode(ambientLightNode)
+        self.loadDefaultObject()
     }
     
     deinit {
