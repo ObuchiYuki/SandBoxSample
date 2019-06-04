@@ -22,7 +22,7 @@ open class ESViewController: UIViewController {
     // SCNViewを返します。
     public var scnView:SCNView{
         guard let scnView = self.view as? SCNView else {
-            fatalError("Error in converting UIViewController.view to SCNView. You cannot set other UIView in ESViewController.view.")
+            fatalError("Error in converting UIViewController.view to SCNView. You cannot set other UIView subclass in ESViewController.view.")
         }
         return scnView
     }
@@ -35,7 +35,7 @@ open class ESViewController: UIViewController {
     
     /// タップ時のヒットテストを行うために使用します。
     /// タップ時のヒットテストは常時有効です。
-    private lazy var taprayTraceGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleRayTrace(_:)))
+    private lazy var tapRayTraceGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleRayTrace(_:)))
     
     /// ドラッグ時のヒットテストを行うために使用します。
     /// ドラッグ時のヒットテストは　enableDragHitTest() を呼び出すまで無効です。
@@ -46,8 +46,8 @@ open class ESViewController: UIViewController {
     
     /// ESViewControllerを継承するクラスはこのメソッドを上書きし、
     /// ESSceneControllerのサブクラスを返す必要があります。
-    open func getSceneController() -> ESSceneController? {
-        return nil
+    open func getSceneController() -> ESSceneController {
+        fatalError("GetSceneController.getSceneController() must be overrided to return ESSceneController.")
     }
     
     //==================================================================
@@ -91,9 +91,7 @@ open class ESViewController: UIViewController {
         }
         
         // SceneController作成
-        guard let sceneController = getSceneController() else {
-            fatalError("GetSceneController must be overrided to return ESSceneController.")
-        }
+        let sceneController = getSceneController()
         
         self.sceneController = sceneController
         self.scnView.scene = sceneController.scene
@@ -103,7 +101,7 @@ open class ESViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        scnView.addGestureRecognizer(taprayTraceGestureRecognizer)
+        scnView.addGestureRecognizer(tapRayTraceGestureRecognizer)
     }
     
     @objc private func handleRayTrace(_ gestureRecognize: UIGestureRecognizer) {
@@ -116,15 +114,27 @@ open class ESViewController: UIViewController {
     //==================================================================
     // MARK: - UIResponder Override Metheods -
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.sceneController.touchesBegan(touches, with: event)
+        guard let location = _excludeFirstLocation(from: touches) else {return}
+        self.sceneController.touchesBegan(at: location)
     }
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.sceneController.touchesEnded(touches, with: event)
+        guard let location = _excludeFirstLocation(from: touches) else {return}
+        self.sceneController.touchesEnd(at: location)
     }
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.sceneController.touchesMoved(touches, with: event)
+        guard let location = _excludeFirstLocation(from: touches) else {return}
+        self.sceneController.touchesMoved(at: location)
     }
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.sceneController.touchesCancelled(touches, with: event)
+        guard let location = _excludeFirstLocation(from: touches) else {return}
+        self.sceneController.touchesCanceled(at: location)
+    }
+    
+    private func _excludeFirstLocation(from touches:Set<UITouch>) -> CGPoint? {
+        guard
+            let touch = touches.first,
+            let view = touch.view
+            else {debugPrint("Error occured while finding averable touch event.");return nil}
+        return touch.location(in: view)
     }
 }

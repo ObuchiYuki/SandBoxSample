@@ -1,28 +1,20 @@
 //
 //  ESSceneController.swift
-//  3DAppSample
 //
 //  Created by yuki on 2019/05/09.
 //  Copyright © 2019 yuki. All rights reserved.
 //
 
-import UIKit
 import SceneKit
 import SpriteKit
 
 /**
  ESSceneControllerはSCNSceneの管理を提供します。
- 継承して使うことを想定しています。
- initにSCNViewを使いますが、参照を保持しません。
- 
- - sceneWillLoad()
- はscene初期化前に呼び出されます。まだsceneはnilです。
- - sceneDidLoad()
- はscene初期化後に呼び出されます。sceneにはSCNSceneが代入されています。
  */
-open class ESSceneController: UIResponder {
-    // ================================================================
-    // MARK: - Properties
+open class ESSceneController :NSObject{
+    // ================================================================================ //
+    // MARK: - Properties -
+    
     /// 管理するシーンです。もし異なるSCNSceneを使用する場合は
     public var scene:SCNScene!
     
@@ -76,15 +68,21 @@ open class ESSceneController: UIResponder {
         return ambientLightNode
     }()
     
-    // ================================================================
+    // ================================================================================ //
     // MARK: - Private Properties
-    /// 親のSCNViewです。
+    
+    /// 親のESViewControllerです。（参照は保持していません。）
     private weak var _esViewController:ESViewController!
+    
+    /// 親のSCNViewです。（参照は保持していません。）
+    private var scnView:SCNView {
+        return _esViewController.scnView
+    }
     
     // update更新用の`DisplayLink`です。
     private lazy var _displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(ESSceneController._update(displayLink:)))
     
-    // ================================================================
+    // ================================================================================ //
     // MARK: - Methods
     
     /// 画面上を指が動いた時のヒットテストを有効にします。
@@ -96,9 +94,19 @@ open class ESSceneController: UIResponder {
         self._esViewController.disablDragHitTest()
     }
     
-    // ===============================
-    // MAARK: - Overridable Methods
+    // ============================================================== //
+    // MARK: - Handler Methods -
     
+    @objc private func _update(displayLink: CADisplayLink) {
+        // 毎フレーム呼び出し。
+        self.update(displayLink.duration)
+    }
+    
+    // ============================================================== //
+    // MARK: - Overridable Methods -
+    
+    // ===================================== //
+    // MARK: - Scene Constructing Methods -
     /// scene初期化前に呼び出されます。まだsceneはnilです。
     open func sceneWillLoad(){}
     
@@ -109,6 +117,8 @@ open class ESSceneController: UIResponder {
     /// scene初期化後に呼び出されます。sceneにはSCNSceneが代入されています。
     open func sceneDidLoad(){}
     
+    // ===================================== //
+    // MARK: - Rendering Methods -
     /// シーンのアップデート時に呼び出されます。
     /// この処理は描画毎に常に呼び出されます。　
     open func update(_ duration:Double) {}
@@ -129,17 +139,48 @@ open class ESSceneController: UIResponder {
     /// この処理は処理がある時のみ呼ばれます。
     open func didRenderScene() {}
     
+    // ============================================================== //
+    // MARK: - Event Methods -
+    
+    // ===================================== //
+    // MARK: - Contact -
+    
+    /// 物理体の接触判定開始時に呼び出されます。
     open func didContactStart(nodeA:SCNNode, nodeB:SCNNode) {}
+    /// 物理体の接触判定中に毎フレーム呼び出されます。
     open func didContacting(nodeA:SCNNode, nodeB:SCNNode) {}
+    /// 物理体の接触判定終了時に呼び出されます。
     open func didContactEnd(nodeA:SCNNode, nodeB:SCNNode) {}
     
+    
+    // ===================================== //
+    // MARK: - Hit Test -
+    
+    /// タッチによるヒットテスト判定が完了した時に呼び出されます。
     open func didHitTestEnd(_ results:[SCNHitTestResult]) {}
+    
+    // ===================================== //
+    // MARK: - Touch Handler -
+    
+    /// 画面へのタッチ開始時に呼び出されます。
+    open func touchesBegan(at location:CGPoint) {}
+    
+    /// 画面へのタッチが動いている時に呼び出されます。
+    open func touchesMoved(at location:CGPoint) {}
+    
+    /// 画面へのタッチが完了した時に呼び出されます。
+    open func touchesEnd(at location:CGPoint) {}
+    
+    /// 画面へのタッチが中断された場合に呼び出されます。(電話がかかってきた、急に電源が切られた。)
+    open func touchesCanceled(at location:CGPoint) {}
     
     /// 次のESSceneControllerにシーンを渡します。
     public final func present(to sceneController: ESSceneController,with transition:SKTransition,incomingPoint node:SCNNode?=nil, completion: (()->Void)?=nil) {
         let view = _esViewController.scnView
         view.present(sceneController.scene, with: transition, incomingPointOfView: node, completionHandler: completion)
     }
+    // ================================================================================ //
+    // MARK: - Constructor -
     
     /// 初期化します。
     init(_ esViewController:ESViewController) {
@@ -147,7 +188,6 @@ open class ESSceneController: UIResponder {
         self._esViewController = esViewController
         
         super.init()
-        
         // scene読み込み
         self.sceneWillLoad()
         self.loadScene()
@@ -168,15 +208,13 @@ open class ESSceneController: UIResponder {
     }
     
     deinit {
+        // update呼び出し解除
         self._displayLink.remove(from: .main, forMode: .common)
-    }
-
-    @objc private func _update(displayLink: CADisplayLink) {
-        
-        self.update(displayLink.duration)
     }
 }
 
+// ================================================================================ //
+// MARK: - Extension for SCNSceneRendererDelegate -
 extension ESSceneController: SCNSceneRendererDelegate{
     public func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {
         self.didAnimationRendered()
@@ -192,6 +230,8 @@ extension ESSceneController: SCNSceneRendererDelegate{
     }
 }
 
+// ================================================================================ //
+// MARK: - Extension for SCNPhysicsContactDelegate -
 extension ESSceneController: SCNPhysicsContactDelegate {
     public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         self.didContactStart(nodeA: contact.nodeA, nodeB: contact.nodeB)

@@ -22,21 +22,21 @@ extension TSVector3 {
     }
     
     public static func + (left:TSVector3, right:TSVector3) -> TSVector3 {
-        return TSVector3(x: left.x + right.x, y: left.y + right.y, z: left.z + right.z)
+        return TSVector3(left.x + right.x, left.y + right.y, left.z + right.z)
     }
     public static func - (left:TSVector3, right:TSVector3) -> TSVector3 {
-        return TSVector3(x: left.x - right.x, y: left.y - right.y, z: left.z - right.z)
+        return TSVector3(left.x - right.x, left.y - right.y, left.z - right.z)
     }
     public static func * (left:TSVector3, right:Int) -> TSVector3 {
-        return TSVector3(x: left.x * right, y: left.y * right, z: left.z * right)
+        return TSVector3(left.x * right, left.y * right, left.z * right)
     }
     public static func / (left:TSVector3, right:Int) -> TSVector3 {
-        return TSVector3(x: left.x / right, y: left.y / right, z: left.z / right)
+        return TSVector3(left.x / right, left.y / right, left.z / right)
     }
 }
 extension TSVector3 {
-    static let zero = TSVector3(x: 0, y: 0, z: 0)
+    static let zero = TSVector3(0, 0, 0)
     
     /// An unit size of TSVector3 which is `(x: 1, y: 1, z: 1)`
-    static let unit = TSVector3(x: 1, y: 1, z: 1)
+    static let unit = TSVector3(1, 1, 1)
 }

@@ -24,7 +24,7 @@
 		B6445F12229D1980002ECD90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6445F10229D1980002ECD90 /* Main.storyboard */; };
 		B6445F14229D1981002ECD90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6445F13229D1981002ECD90 /* Assets.xcassets */; };
 		B6445F17229D1981002ECD90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6445F15229D1981002ECD90 /* LaunchScreen.storyboard */; };
-		B6445F21229D1A24002ECD90 /* Ex+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F1E229D1A24002ECD90 /* Ex+SceneKit.swift */; };
+		B6445F21229D1A24002ECD90 /* Ex+SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F1E229D1A24002ECD90 /* Ex+SCNNode.swift */; };
 		B6445F22229D1A24002ECD90 /* ESViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F1F229D1A24002ECD90 /* ESViewController.swift */; };
 		B6445F23229D1A24002ECD90 /* ESSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F20229D1A24002ECD90 /* ESSceneController.swift */; };
 		B6445F25229D1A7E002ECD90 /* TP_japanese_house_1.scn in Resources */ = {isa = PBXBuildFile; fileRef = B6445F24229D1A7E002ECD90 /* TP_japanese_house_1.scn */; };
@@ -33,8 +33,12 @@
 		B647852A22A3F114005D37AF /* Ex+TSBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852922A3F114005D37AF /* Ex+TSBlock.swift */; };
 		B647852C22A3F3A6005D37AF /* TSVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852B22A3F3A6005D37AF /* TSVector3.swift */; };
 		B647852E22A3F7C6005D37AF /* TSLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647852D22A3F7C6005D37AF /* TSLevel.swift */; };
+		B67AF20422A60C6A00B92B03 /* Ex+SCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67AF20322A60C6A00B92B03 /* Ex+SCNVector3.swift */; };
+		B67AF20622A60C9C00B92B03 /* Ex+SCNMatrix4.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67AF20522A60C9C00B92B03 /* Ex+SCNMatrix4.swift */; };
+		B67AF20822A60CB000B92B03 /* Ex+SCNAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67AF20722A60CB000B92B03 /* Ex+SCNAction.swift */; };
 		B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD94B822A11B1B00664F30 /* MySceneController.swift */; };
 		B6F0F37B22A4D59100384715 /* Ex+TSVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */; };
+		B6F0F37D22A5276500384715 /* _TSGestureHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0F37C22A5276500384715 /* _TSGestureHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +61,7 @@
 		B6445F13229D1981002ECD90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6445F16229D1981002ECD90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B6445F18229D1981002ECD90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6445F1E229D1A24002ECD90 /* Ex+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ex+SceneKit.swift"; sourceTree = "<group>"; };
+		B6445F1E229D1A24002ECD90 /* Ex+SCNNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ex+SCNNode.swift"; sourceTree = "<group>"; };
 		B6445F1F229D1A24002ECD90 /* ESViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESViewController.swift; sourceTree = "<group>"; };
 		B6445F20229D1A24002ECD90 /* ESSceneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESSceneController.swift; sourceTree = "<group>"; };
 		B6445F24229D1A7E002ECD90 /* TP_japanese_house_1.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_japanese_house_1.scn; sourceTree = "<group>"; };
@@ -66,8 +70,12 @@
 		B647852922A3F114005D37AF /* Ex+TSBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+TSBlock.swift"; sourceTree = "<group>"; };
 		B647852B22A3F3A6005D37AF /* TSVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSVector3.swift; sourceTree = "<group>"; };
 		B647852D22A3F7C6005D37AF /* TSLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSLevel.swift; sourceTree = "<group>"; };
+		B67AF20322A60C6A00B92B03 /* Ex+SCNVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+SCNVector3.swift"; sourceTree = "<group>"; };
+		B67AF20522A60C9C00B92B03 /* Ex+SCNMatrix4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+SCNMatrix4.swift"; sourceTree = "<group>"; };
+		B67AF20722A60CB000B92B03 /* Ex+SCNAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+SCNAction.swift"; sourceTree = "<group>"; };
 		B6CD94B822A11B1B00664F30 /* MySceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneController.swift; sourceTree = "<group>"; };
 		B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ex+TSVector3.swift"; sourceTree = "<group>"; };
+		B6F0F37C22A5276500384715 /* _TSGestureHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _TSGestureHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +155,7 @@
 		B6445F26229D1BB7002ECD90 /* ESKit */ = {
 			isa = PBXGroup;
 			children = (
-				B6445F1E229D1A24002ECD90 /* Ex+SceneKit.swift */,
+				B67AF20922A60E1500B92B03 /* Extensions */,
 				B6445F1F229D1A24002ECD90 /* ESViewController.swift */,
 				B6445F20229D1A24002ECD90 /* ESSceneController.swift */,
 			);
@@ -159,6 +167,7 @@
 			children = (
 				B6445F0E229D1980002ECD90 /* ViewController.swift */,
 				B6CD94B822A11B1B00664F30 /* MySceneController.swift */,
+				B6F0F37C22A5276500384715 /* _TSGestureHelper.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -195,14 +204,33 @@
 		B647852622A3BBEE005D37AF /* TopicaSandBox */ = {
 			isa = PBXGroup;
 			children = (
+				B67AF20A22A60F2300B92B03 /* Extensions */,
 				B647852722A3BC0C005D37AF /* TSBlock.swift */,
-				B647852922A3F114005D37AF /* Ex+TSBlock.swift */,
 				B647852B22A3F3A6005D37AF /* TSVector3.swift */,
-				B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */,
 				B647852D22A3F7C6005D37AF /* TSLevel.swift */,
 				B6426F3422A4A64700B7B452 /* TSAnimator.swift */,
 			);
 			path = TopicaSandBox;
+			sourceTree = "<group>";
+		};
+		B67AF20922A60E1500B92B03 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B6445F1E229D1A24002ECD90 /* Ex+SCNNode.swift */,
+				B67AF20322A60C6A00B92B03 /* Ex+SCNVector3.swift */,
+				B67AF20722A60CB000B92B03 /* Ex+SCNAction.swift */,
+				B67AF20522A60C9C00B92B03 /* Ex+SCNMatrix4.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B67AF20A22A60F2300B92B03 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B6F0F37A22A4D59100384715 /* Ex+TSVector3.swift */,
+				B647852922A3F114005D37AF /* Ex+TSBlock.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,7 +307,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6445F31229D3CCD002ECD90 /* Shaders.metal in Sources */,
+				B67AF20622A60C9C00B92B03 /* Ex+SCNMatrix4.swift in Sources */,
 				B63A409122A4B2A70033EF09 /* Ex+Foundation.swift in Sources */,
+				B67AF20822A60CB000B92B03 /* Ex+SCNAction.swift in Sources */,
 				B63A409522A4B2A70033EF09 /* Ex+CoreGraphics.swift in Sources */,
 				B6445F22229D1A24002ECD90 /* ESViewController.swift in Sources */,
 				B63A408E22A4B2A70033EF09 /* RMBindCenter.swift in Sources */,
@@ -290,8 +320,9 @@
 				B6445F0F229D1980002ECD90 /* ViewController.swift in Sources */,
 				B63A409022A4B2A70033EF09 /* Ex+Swift.swift in Sources */,
 				B6426F3522A4A64700B7B452 /* TSAnimator.swift in Sources */,
-				B6445F21229D1A24002ECD90 /* Ex+SceneKit.swift in Sources */,
+				B6445F21229D1A24002ECD90 /* Ex+SCNNode.swift in Sources */,
 				B63A408D22A4B2A70033EF09 /* RMViewAnimator.swift in Sources */,
+				B6F0F37D22A5276500384715 /* _TSGestureHelper.swift in Sources */,
 				B647852C22A3F3A6005D37AF /* TSVector3.swift in Sources */,
 				B63A409422A4B2A70033EF09 /* Ex+UIColor.swift in Sources */,
 				B6445F0D229D1980002ECD90 /* AppDelegate.swift in Sources */,
@@ -299,6 +330,7 @@
 				B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */,
 				B647852E22A3F7C6005D37AF /* TSLevel.swift in Sources */,
 				B6445F23229D1A24002ECD90 /* ESSceneController.swift in Sources */,
+				B67AF20422A60C6A00B92B03 /* Ex+SCNVector3.swift in Sources */,
 				B63A409322A4B2A70033EF09 /* Ex+UIKit.swift in Sources */,
 				B6F0F37B22A4D59100384715 /* Ex+TSVector3.swift in Sources */,
 			);

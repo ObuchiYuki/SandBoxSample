@@ -28,7 +28,7 @@ public struct TSVector3 {
     
     //============================================================
     // MARK: - Constructor -
-    public init(x:Int, y:Int, z:Int) {
+    public init(_ x:Int, _ y:Int, _ z:Int) {
         assert(x <= Int(Int16.max) && y <= Int(Int16.max) && z <= Int(Int16.max), "Elements of TSVector3 must be less than 32767")
         assert(x >= Int(Int16.min) && y >= Int(Int16.min) && z >= Int(Int16.min), "Elements of TSVector3 must be bigger than -32768")
         

@@ -21,6 +21,7 @@ open class TSBlock {
     //========================================================================
     // MARK: - TSBlock Public Properties -
     /// `TSBlock`のidetifierです。
+    /// 通常はファイル名で初期化されます。
     public let identifier:String
     
     /// 空気かどうかです。
@@ -44,9 +45,8 @@ open class TSBlock {
         assert(!isAir, "TP_Air have no node to render.")
         
         // ノード生成
-        let filename = identifier + ".scn"
-        guard let node = SCNNode(named: filename) else {
-            fatalError("No scn file named \"\(filename)\" found.")
+        guard let node = SCNNode(named: identifier) else {
+            fatalError("No scn file named \"\(identifier).scn\" found.")
         }
         
         // マテリアル生成

@@ -53,8 +53,8 @@ public final class RMStorage{
     public static let shared = RMStorage()
     private init() {}
     
-    /// ===========================================
-    /// ---- RMStorage Methods ----
+    // ===========================================
+    // ---- RMStorage Methods ----
     
     /// 引数`value`に与えられた値を保存します。
     /// に保存されます。

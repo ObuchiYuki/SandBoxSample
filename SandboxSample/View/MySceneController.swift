@@ -9,33 +9,19 @@
 import SceneKit
 
 class MySceneController: ESSceneController {
-    let level = TSLevel()
+    private let level = TSLevel()
+    private lazy var gestutreHelper = _TSGestureHelper(delegate: self)
     
-    var cameraStartPosition = SCNVector3.zero
-    var touchStartPosition = CGPoint.zero
-    
-    func didPanMove(with range:CGFloat) {
-        let t:SCNVector3 = [cameraStartPosition.x - Float(range), cameraStartPosition.y, cameraStartPosition.z + Float(range)]
-        cameraNode.position = t
-    }
     func createHouse(x: Int, y:Int) {
         let position = TSVector3(x: x, y: 1, z: y)
         level.placeBlock(.japaneseHouse, at: position)
     }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else {return}
-        
-        let location = touch.location(in: touch.view!)
-        didPanMove(with: (location.x - touchStartPosition.x) / 60)
+
+    override func touchesBegan(at location: CGPoint) {
+        gestutreHelper.touchBegan(at: location, with: self.cameraNode.position)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else {return}
-        
-        let location = touch.location(in: touch.view!)
-        cameraStartPosition = cameraNode.position
-        touchStartPosition = location
+    override func touchesMoved(at location: CGPoint) {
+        gestutreHelper.touchMoved(to: location)
     }
     
     override func didHitTestEnd(_ results: [SCNHitTestResult]) {
@@ -54,8 +40,6 @@ class MySceneController: ESSceneController {
         
         camera.usesOrthographicProjection = true
         camera.orthographicScale = 10
-        camera.zNear = 0
-        
         
         cameraNode.eulerAngles = [-.pi/12, .pi/4, 0]
         cameraNode.position = [30, 9, 24]
@@ -65,6 +49,13 @@ class MySceneController: ESSceneController {
                 level.placeBlock(.normalFloar, at: TSVector3(x: x * 5, y: 0, z: z * 5))
             }
         }
+    }
+}
+extension MySceneController:_TSGestureHelperDelegate {
+    func moveCamera(to position: SCNVector3) {
+        self.cameraNode.simdLocalTranslate(by: simd_float3
+        )
+        self.cameraNode.position = position
     }
 }
 
