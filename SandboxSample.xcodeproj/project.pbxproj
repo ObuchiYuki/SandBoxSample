@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B61AAD3F22A65A8000946569 /* TP_japanese_house_2.scn in Resources */ = {isa = PBXBuildFile; fileRef = B61AAD3E22A65A8000946569 /* TP_japanese_house_2.scn */; };
 		B63A408C22A4B2A70033EF09 /* RMStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408122A4B2A60033EF09 /* RMStorage.swift */; };
 		B63A408D22A4B2A70033EF09 /* RMViewAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408222A4B2A60033EF09 /* RMViewAnimator.swift */; };
 		B63A408E22A4B2A70033EF09 /* RMBindCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408322A4B2A60033EF09 /* RMBindCenter.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B61AAD3E22A65A8000946569 /* TP_japanese_house_2.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_japanese_house_2.scn; sourceTree = "<group>"; };
 		B63A408122A4B2A60033EF09 /* RMStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMStorage.swift; sourceTree = "<group>"; };
 		B63A408222A4B2A60033EF09 /* RMViewAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMViewAnimator.swift; sourceTree = "<group>"; };
 		B63A408322A4B2A60033EF09 /* RMBindCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMBindCenter.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			children = (
 				B6426F3822A4ABA900B7B452 /* TP_normal_floar.scn */,
 				B6445F24229D1A7E002ECD90 /* TP_japanese_house_1.scn */,
+				B61AAD3E22A65A8000946569 /* TP_japanese_house_2.scn */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				B6445F17229D1981002ECD90 /* LaunchScreen.storyboard in Resources */,
 				B6426F3922A4ABA900B7B452 /* TP_normal_floar.scn in Resources */,
 				B6445F14229D1981002ECD90 /* Assets.xcassets in Resources */,
+				B61AAD3F22A65A8000946569 /* TP_japanese_house_2.scn in Resources */,
 				B6445F25229D1A7E002ECD90 /* TP_japanese_house_1.scn in Resources */,
 				B6445F12229D1980002ECD90 /* Main.storyboard in Resources */,
 			);

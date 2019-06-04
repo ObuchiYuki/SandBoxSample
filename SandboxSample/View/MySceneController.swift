@@ -7,21 +7,34 @@
 //
 
 import SceneKit
+import SceneKit.ModelIO
 
 class MySceneController: ESSceneController {
-    private let level = TSLevel()
-    private lazy var gestutreHelper = _TSGestureHelper(delegate: self)
+    private let level = TSLevel.ground
+    private lazy var gestutreHelper = _TSCameraGestureHelper(delegate: self)
+    private lazy var pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture))
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+    
+    @objc func handlePinchGesture(_ recognizer:UIPinchGestureRecognizer) {
+        let scale = recognizer.scale
+        self.gestutreHelper.pinched(to: scale)
+    }
+    @objc func handlePanGesture(_ recognizer:UIPanGestureRecognizer) {
+        let vector = recognizer.translation(in: scnView)
+        self.gestutreHelper.panned(to: vector)
+    }
+    func handleSliderMovement(with value:Float) {
+        self.camera.focalLength = CGFloat(value)
+    }
     
     func createHouse(x: Int, y:Int) {
-        let position = TSVector3(x: x, y: 1, z: y)
-        level.placeBlock(.japaneseHouse, at: position)
+        let position = TSVector3(x, 1, y)
+        
+        level.placeBlock(.japaneseHouse1, at: position)
     }
 
     override func touchesBegan(at location: CGPoint) {
         gestutreHelper.touchBegan(at: location, with: self.cameraNode.position)
-    }
-    override func touchesMoved(at location: CGPoint) {
-        gestutreHelper.touchMoved(to: location)
     }
     
     override func didHitTestEnd(_ results: [SCNHitTestResult]) {
@@ -32,30 +45,29 @@ class MySceneController: ESSceneController {
     }
     
     override func sceneDidLoad() {
-        setupSkybox()
-        level.delagate = self
         
-        lightNode.light?.castsShadow = true
-        lightNode.light?.shadowSampleCount = 4
+        self.level.delagate = self
         
-        camera.usesOrthographicProjection = true
-        camera.orthographicScale = 10
+        self.addGestureRecognizer(pinchGestureRecognizer)
+        self.addGestureRecognizer(panGestureRecognizer)
         
-        cameraNode.eulerAngles = [-.pi/12, .pi/4, 0]
-        cameraNode.position = [30, 9, 24]
+        self.setupSkybox()
+        self.setupCamera()
+        self.setupDirectionalLight()
         
-        for x in 0...5 {
-            for z in 0...5 {
-                level.placeBlock(.normalFloar, at: TSVector3(x: x * 5, y: 0, z: z * 5))
+        for x in 0...10 {
+            for z in 0...10 {
+                level.placeBlock(.normalFloar, at: TSVector3(x * 5, 0, z * 5))
             }
         }
     }
 }
-extension MySceneController:_TSGestureHelperDelegate {
+extension MySceneController:_TSCameraGestureHelperDelegate {
     func moveCamera(to position: SCNVector3) {
-        self.cameraNode.simdLocalTranslate(by: simd_float3
-        )
         self.cameraNode.position = position
+    }
+    func changeZoom(to value: CGFloat) {
+        self.camera.orthographicScale = Double(value)
     }
 }
 
@@ -63,6 +75,7 @@ extension MySceneController:TSLevelDelegate {
     func didPlaceBlock(at anchor: TSVector3) {
         guard let node = level.getBlockNode(at: anchor) else { return }
         node.position = anchor.scnVector3
+        
         rootNode.addChildNode(node)
     }
     func didDestoryBlock(at anchor: TSVector3) {
@@ -73,18 +86,35 @@ extension MySceneController:TSLevelDelegate {
 }
 
 extension MySceneController {
-    func createMaterial() -> SCNMaterial {
-        let material = SCNMaterial()
-        let program = SCNProgram()
-        program.fragmentFunctionName = "myFragment"
-        program.vertexFunctionName = "myVertex"
-        material.program = program
+    func setupDirectionalLight() {
+        directionalLightNode.eulerAngles = [-.pi/4, -.pi/4, 0]
+        directionalLight.castsShadow = true
+        directionalLight.shadowSampleCount = 16
+        directionalLight.shadowCascadeCount = 4
+        directionalLight.shadowRadius = 5
+        directionalLight.shadowMapSize = CGSize(width: 500, height: 500)
+        directionalLight.maximumShadowDistance = 2000
+        directionalLight.shadowColor = UIColor.black
         
-        let image = UIImage(named: "TP_japanese_house")!
-        let imageProperty = SCNMaterialProperty(contents: image)
-        material.setValue(imageProperty, forKey: "diffuseTexture")
+        let action = SCNAction.repeatForever(SCNAction.rotateBy(x: .pi, y: 0, z: 0, duration: 10))
+        directionalLightNode.runAction(action)
+    }
+    func setupCamera() {
+        camera.wantsHDR = true
+        camera.usesOrthographicProjection = true
+        camera.orthographicScale = 10
+        camera.automaticallyAdjustsZRange = true
+        camera.wantsExposureAdaptation = true
         
-        return material
+        camera.wantsDepthOfField = true
+        camera.focalLength = 1.8
+        camera.fStop = 1.2
+        
+        camera.bloomIntensity = 1.0
+        
+
+        cameraNode.eulerAngles = [-.pi/12, .pi/4, 0]
+        cameraNode.position = [100, 25, 100]
     }
     func setupSkybox() {
         self.scene.background.contents = [

@@ -23,6 +23,7 @@ open class TSBlock {
     /// `TSBlock`のidetifierです。
     /// 通常はファイル名で初期化されます。
     public let identifier:String
+    public let index:Int
     
     /// 空気かどうかです。
     public let isAir:Bool
@@ -33,14 +34,16 @@ open class TSBlock {
         
         return TSVector3(self.createNode().size)
     }()
-    
     //========================================================================
     // MARK: - TSBlock Private Properties -
-    private let _textureName:String
+    private lazy var _originalNode = self._createNode()
     
     //========================================================================
     // MARK: - TSBlock Public Methods -
     public func createNode() -> SCNNode {
+        return _originalNode.clone()
+    }
+    private func _createNode() -> SCNNode {
         // 空気は実態化できない
         assert(!isAir, "TP_Air have no node to render.")
         
@@ -49,11 +52,6 @@ open class TSBlock {
             fatalError("No scn file named \"\(identifier).scn\" found.")
         }
         
-        // マテリアル生成
-        let material = _TSNodeMaterialProvider.default.material(textureNamed: _textureName)
-        node.childNodes.forEach{
-            $0.geometry?.materials = [material]
-        }
         return node
     }
     
@@ -76,38 +74,57 @@ open class TSBlock {
     
     //========================================================================
     // MARK: - TSBlock Constructor -
-    init(nodeNamed nodeName:String, textureNamed textureName:String) {
+    init(nodeNamed nodeName:String, index:Int) {
         self.identifier = nodeName
+        self.index = index
         self.isAir = false
-        self._textureName = textureName
+        
+        _TSBlockManager.default.registerBlock(self)
     }
     init() {
         self.identifier = "TP_Air"
+        self.index = 0
         self.isAir = true
-        self._textureName = "none"
+        
+        _TSBlockManager.default.registerBlock(self)
+    }
+}
+
+extension TSBlock {
+    static func block(for index:Int) -> TSBlock {
+        guard let block = _TSBlockManager.default.block(for: index) else {
+            fatalError("Error in finding TSBlock indexed \(index)")
+        }
+        return block
+    }
+    static func block(for idetifier:String) -> TSBlock {
+        guard let block = _TSBlockManager.default.block(for: idetifier) else {
+            fatalError("Error in finding TSBlock idetified \(idetifier)")
+        }
+        return block
     }
 }
 
 // ================================================================
-// MARK: - _TSNodeMaterialProvider (Private Class) -
-private class _TSNodeMaterialProvider {
-    static let `default` = _TSNodeMaterialProvider()
+// MARK: - _TSBlockManager (Private Class) -
+
+/// ブロックの管理を行います。
+private class _TSBlockManager {
+    /// シングルトン
+    static let `default` = _TSBlockManager()
     
-    func material(textureNamed name:String) -> SCNMaterial {
-        guard let texture = UIImage(named: name) else {
-            fatalError("Cannot find image named \"\(name)\"")
-        }
-        let material = SCNMaterial()
-        
-        let program = SCNProgram()
-        program.fragmentFunctionName = "TSFragment"
-        program.vertexFunctionName = "TSVertex"
-        
-        material.program = program
-        
-        let imageProperty = SCNMaterialProperty(contents: texture)
-        material.setValue(imageProperty, forKey: "diffuseTexture")
-        
-        return material
+    /// 登録済みブロック一覧
+    private var blocks = [TSBlock]()
+    
+    /// ブロックを登録します。
+    func registerBlock(_ block:TSBlock) {
+        self.blocks.append(block)
+    }
+    
+    func block(for identifier:String) -> TSBlock?{
+        return self.blocks.first(where: {$0.identifier == identifier})
+    }
+    func block(for index:Int) -> TSBlock? {
+        return self.blocks.first(where: {$0.index == index})
     }
 }

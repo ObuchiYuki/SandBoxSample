@@ -29,10 +29,10 @@ class TSLevel {
     /// 次元のマップです。各元に 0 〜 65535 のサイズを持ちます。
     /// これは次元の座標と異なります。編集は直接でなく
     /// _getBlock(at:_) _setBlock(at:_) を用いてください。
-    private lazy var _anchorBlockMap = _constructFillMap()
+    private lazy var _anchorBlockMap:[[[Int]]] = _constructFillMap()
     
     /// ノードのマップです。作られたタイミングで、それぞれ初期化されます。
-    private lazy var _nodemap = _constructNodeMap()
+    private lazy var _nodemap:[[[SCNNode?]]] = _constructNodeMap()
     
     /// ブロックのアンカー（原点）のマップです。
     /// 画面に配置する場合これをmapしてください。
@@ -44,7 +44,7 @@ class TSLevel {
     /// オブジェクトのSCNNodeを返します。空気の場合はnilを返します。
     func getBlockNode(at point:TSVector3) -> SCNNode? {
         let (x, y, z) = _convertVectorToIndex(point)
-        let block = _anchorBlockMap[x][y][z]
+        let block = TSBlock.block(for: _anchorBlockMap[x][y][z])
         let blockNode = _nodemap[x][y][z]
         
         if let blockNode = blockNode { //すでに生成済みならば
@@ -115,13 +115,14 @@ class TSLevel {
     /// マスのブロックを返します。
     private func _getBlock(at point:TSVector3) -> TSBlock {
         let (x, y, z) = _convertVectorToIndex(point)
-        return _anchorBlockMap[x][y][z]
+        let index = _anchorBlockMap[x][y][z]
+        return TSBlock.block(for: index)
     }
     
     private func _setBlock(_ block:TSBlock, at point:TSVector3) {
         let (x, y, z) = _convertVectorToIndex(point)
         _anchormap.insert(point)
-        _anchorBlockMap[x][y][z] = block
+        _anchorBlockMap[x][y][z] = block.index
     }
     
     private func _convertVectorToIndex(_ v:TSVector3) -> (x:Int, y:Int, z:Int) {
@@ -133,12 +134,12 @@ class TSLevel {
         let size = Int(UInt16.max)
         return Array(repeating:Array(repeating:Array(repeating: nil, count: size), count: size), count: size)
     }
-    private func _constructFillMap() -> [[[TSBlock]]]{
+    private func _constructFillMap() -> [[[Int]]]{
         let size = Int(UInt16.max)
-        return Array(repeating:Array(repeating:Array(repeating: TSBlock.air, count: size), count: size), count: size)
+        return Array(repeating:Array(repeating:Array(repeating: 0, count: size), count: size), count: size)
     }
-    private func _constructAnchorMap() -> [[[TSBlock?]]]{
+    private func _constructAnchorMap() -> [[[Int]]]{
         let size = Int(UInt16.max)
-        return Array(repeating:Array(repeating:Array(repeating: nil, count: size), count: size), count: size)
+        return Array(repeating:Array(repeating:Array(repeating: 0, count: size), count: size), count: size)
     }
 }

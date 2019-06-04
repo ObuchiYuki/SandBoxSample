@@ -23,6 +23,11 @@ open class ESSceneController :NSObject{
         return scene.rootNode
     }
     
+    /// 親のSCNViewです。（参照は保持していません。）
+    var scnView:SCNView {
+        return _esViewController.scnView
+    }
+    
     /// Sceneのカメラです。
     /// ノードとしてのカメラは、ESSceneController.cameraNodeに格納されます。
     public lazy var camera = SCNCamera()
@@ -38,6 +43,15 @@ open class ESSceneController :NSObject{
         return light
     }()
     
+    public lazy var directionalLight:SCNLight = {
+        let light = SCNLight()
+        
+        light.type = .directional
+        light.color = UIColor.lightGray
+        
+        return light
+    }()
+    
     /// Sceneのカメラです。初期位置は`SCNVector3.zero`です。
     public lazy var cameraNode:SCNNode = {
         let cameraNode = SCNNode()
@@ -47,9 +61,9 @@ open class ESSceneController :NSObject{
     }()
     
     /// Sceneの指向性ライトです。初期位置は`[0, 10, 10]`です。
-    public var lightNode:SCNNode = {
+    public lazy var directionalLightNode:SCNNode = {
         let lightNode = SCNNode()
-        let light = SCNLight()
+        let light = self.directionalLight
         
         light.type = .directional
         light.color = UIColor.white
@@ -74,11 +88,6 @@ open class ESSceneController :NSObject{
     /// 親のESViewControllerです。（参照は保持していません。）
     private weak var _esViewController:ESViewController!
     
-    /// 親のSCNViewです。（参照は保持していません。）
-    private var scnView:SCNView {
-        return _esViewController.scnView
-    }
-    
     // update更新用の`DisplayLink`です。
     private lazy var _displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(ESSceneController._update(displayLink:)))
     
@@ -93,6 +102,13 @@ open class ESSceneController :NSObject{
     public func disablDragHitTest() {
         self._esViewController.disablDragHitTest()
     }
+    public func addGestureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
+        self.scnView.addGestureRecognizer(gestureRecognizer)
+    }
+    public func removeGustureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
+        self.scnView.removeGestureRecognizer(gestureRecognizer)
+    }
+    
     
     // ============================================================== //
     // MARK: - Handler Methods -
@@ -203,7 +219,7 @@ open class ESSceneController :NSObject{
         
         // Defaultノード読み込み
         self.rootNode.addChildNode(cameraNode)
-        self.rootNode.addChildNode(lightNode)
+        self.rootNode.addChildNode(directionalLightNode)
         self.rootNode.addChildNode(ambientLightNode)
     }
     
