@@ -10,7 +10,6 @@
 		160FA00A91B348C7EA8C7365 /* Pods_SandboxSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB112E7A4C58577C10C25DB0 /* Pods_SandboxSample.framework */; };
 		B61AAD3F22A65A8000946569 /* TP_japanese_house_2.scn in Resources */ = {isa = PBXBuildFile; fileRef = B61AAD3E22A65A8000946569 /* TP_japanese_house_2.scn */; };
 		B63A408C22A4B2A70033EF09 /* RMStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408122A4B2A60033EF09 /* RMStorage.swift */; };
-		B63A408D22A4B2A70033EF09 /* RMViewAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408222A4B2A60033EF09 /* RMViewAnimator.swift */; };
 		B63A408E22A4B2A70033EF09 /* RMBindCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408322A4B2A60033EF09 /* RMBindCenter.swift */; };
 		B63A408F22A4B2A70033EF09 /* Ex+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408522A4B2A60033EF09 /* Ex+UIImage.swift */; };
 		B63A409022A4B2A70033EF09 /* Ex+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408622A4B2A60033EF09 /* Ex+Swift.swift */; };
@@ -21,6 +20,8 @@
 		B63A409522A4B2A70033EF09 /* Ex+CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63A408B22A4B2A60033EF09 /* Ex+CoreGraphics.swift */; };
 		B6426F3522A4A64700B7B452 /* TSAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6426F3422A4A64700B7B452 /* TSAnimator.swift */; };
 		B6426F3922A4ABA900B7B452 /* TP_normal_floar.scn in Resources */ = {isa = PBXBuildFile; fileRef = B6426F3822A4ABA900B7B452 /* TP_normal_floar.scn */; };
+		B6429F3F22A742B100BF2781 /* TSBlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6429F3E22A742B100BF2781 /* TSBlockManager.swift */; };
+		B6429F4122A7440F00BF2781 /* TSSandboxSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6429F4022A7440F00BF2781 /* TSSandboxSystem.swift */; };
 		B6445F0D229D1980002ECD90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F0C229D1980002ECD90 /* AppDelegate.swift */; };
 		B6445F0F229D1980002ECD90 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6445F0E229D1980002ECD90 /* ViewController.swift */; };
 		B6445F12229D1980002ECD90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6445F10229D1980002ECD90 /* Main.storyboard */; };
@@ -48,7 +49,6 @@
 		AB112E7A4C58577C10C25DB0 /* Pods_SandboxSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SandboxSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B61AAD3E22A65A8000946569 /* TP_japanese_house_2.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_japanese_house_2.scn; sourceTree = "<group>"; };
 		B63A408122A4B2A60033EF09 /* RMStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMStorage.swift; sourceTree = "<group>"; };
-		B63A408222A4B2A60033EF09 /* RMViewAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMViewAnimator.swift; sourceTree = "<group>"; };
 		B63A408322A4B2A60033EF09 /* RMBindCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMBindCenter.swift; sourceTree = "<group>"; };
 		B63A408522A4B2A60033EF09 /* Ex+UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ex+UIImage.swift"; sourceTree = "<group>"; };
 		B63A408622A4B2A60033EF09 /* Ex+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ex+Swift.swift"; sourceTree = "<group>"; };
@@ -59,6 +59,8 @@
 		B63A408B22A4B2A60033EF09 /* Ex+CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ex+CoreGraphics.swift"; sourceTree = "<group>"; };
 		B6426F3422A4A64700B7B452 /* TSAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSAnimator.swift; sourceTree = "<group>"; };
 		B6426F3822A4ABA900B7B452 /* TP_normal_floar.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TP_normal_floar.scn; sourceTree = "<group>"; };
+		B6429F3E22A742B100BF2781 /* TSBlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSBlockManager.swift; sourceTree = "<group>"; };
+		B6429F4022A7440F00BF2781 /* TSSandboxSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSSandboxSystem.swift; sourceTree = "<group>"; };
 		B6445F09229D1980002ECD90 /* SandboxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SandboxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6445F0C229D1980002ECD90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6445F0E229D1980002ECD90 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -100,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				B63A408122A4B2A60033EF09 /* RMStorage.swift */,
-				B63A408222A4B2A60033EF09 /* RMViewAnimator.swift */,
 				B63A408322A4B2A60033EF09 /* RMBindCenter.swift */,
 				B63A408422A4B2A60033EF09 /* extensions */,
 			);
@@ -164,7 +165,7 @@
 		B6445F26229D1BB7002ECD90 /* ESKit */ = {
 			isa = PBXGroup;
 			children = (
-				B67AF20922A60E1500B92B03 /* Extensions */,
+				B67AF20922A60E1500B92B03 /* extensions */,
 				B6445F1F229D1A24002ECD90 /* ESViewController.swift */,
 				B6445F20229D1A24002ECD90 /* ESSceneController.swift */,
 			);
@@ -214,8 +215,10 @@
 		B647852622A3BBEE005D37AF /* TopicaSandBox */ = {
 			isa = PBXGroup;
 			children = (
+				B6429F4022A7440F00BF2781 /* TSSandboxSystem.swift */,
 				B67AF20A22A60F2300B92B03 /* Extensions */,
 				B647852722A3BC0C005D37AF /* TSBlock.swift */,
+				B6429F3E22A742B100BF2781 /* TSBlockManager.swift */,
 				B647852B22A3F3A6005D37AF /* TSVector3.swift */,
 				B647852D22A3F7C6005D37AF /* TSLevel.swift */,
 				B6426F3422A4A64700B7B452 /* TSAnimator.swift */,
@@ -223,7 +226,7 @@
 			path = TopicaSandBox;
 			sourceTree = "<group>";
 		};
-		B67AF20922A60E1500B92B03 /* Extensions */ = {
+		B67AF20922A60E1500B92B03 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
 				B6445F1E229D1A24002ECD90 /* Ex+SCNNode.swift */,
@@ -231,7 +234,7 @@
 				B67AF20722A60CB000B92B03 /* Ex+SCNAction.swift */,
 				B67AF20522A60C9C00B92B03 /* Ex+SCNMatrix4.swift */,
 			);
-			path = Extensions;
+			path = extensions;
 			sourceTree = "<group>";
 		};
 		B67AF20A22A60F2300B92B03 /* Extensions */ = {
@@ -257,7 +260,6 @@
 				CA6A4D449F7C88440E4F1A6C /* Pods-SandboxSample.debug.xcconfig */,
 				50D8017DAF6EC0157786266A /* Pods-SandboxSample.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -396,10 +398,10 @@
 				B63A408C22A4B2A70033EF09 /* RMStorage.swift in Sources */,
 				B647852A22A3F114005D37AF /* Ex+TSBlock.swift in Sources */,
 				B6445F0F229D1980002ECD90 /* ViewController.swift in Sources */,
+				B6429F4122A7440F00BF2781 /* TSSandboxSystem.swift in Sources */,
 				B63A409022A4B2A70033EF09 /* Ex+Swift.swift in Sources */,
 				B6426F3522A4A64700B7B452 /* TSAnimator.swift in Sources */,
 				B6445F21229D1A24002ECD90 /* Ex+SCNNode.swift in Sources */,
-				B63A408D22A4B2A70033EF09 /* RMViewAnimator.swift in Sources */,
 				B6F0F37D22A5276500384715 /* _TSGestureHelper.swift in Sources */,
 				B647852C22A3F3A6005D37AF /* TSVector3.swift in Sources */,
 				B63A409422A4B2A70033EF09 /* Ex+UIColor.swift in Sources */,
@@ -408,6 +410,7 @@
 				B6CD94B922A11B1B00664F30 /* MySceneController.swift in Sources */,
 				B647852E22A3F7C6005D37AF /* TSLevel.swift in Sources */,
 				B6445F23229D1A24002ECD90 /* ESSceneController.swift in Sources */,
+				B6429F3F22A742B100BF2781 /* TSBlockManager.swift in Sources */,
 				B67AF20422A60C6A00B92B03 /* Ex+SCNVector3.swift in Sources */,
 				B63A409322A4B2A70033EF09 /* Ex+UIKit.swift in Sources */,
 				B6F0F37B22A4D59100384715 /* Ex+TSVector3.swift in Sources */,
@@ -558,14 +561,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3L6UJJ3LB2;
+				DEVELOPMENT_TEAM = 4NN4TCPLE3;
 				INFOPLIST_FILE = SandboxSample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.topica.SandboxSample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yukik.SandboxSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -578,14 +581,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3L6UJJ3LB2;
+				DEVELOPMENT_TEAM = 4NN4TCPLE3;
 				INFOPLIST_FILE = SandboxSample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.topica.SandboxSample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yukik.SandboxSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

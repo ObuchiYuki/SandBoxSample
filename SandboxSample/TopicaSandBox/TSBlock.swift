@@ -36,7 +36,7 @@ open class TSBlock {
     }()
     //========================================================================
     // MARK: - TSBlock Private Properties -
-    private lazy var _originalNode = self._createNode()
+    private var _originalNode:SCNNode! = nil
     
     //========================================================================
     // MARK: - TSBlock Public Methods -
@@ -79,52 +79,28 @@ open class TSBlock {
         self.index = index
         self.isAir = false
         
-        _TSBlockManager.default.registerBlock(self)
+        self._originalNode = self._createNode()
     }
     init() {
         self.identifier = "TP_Air"
         self.index = 0
         self.isAir = true
         
-        _TSBlockManager.default.registerBlock(self)
+        self._originalNode = nil
     }
 }
 
 extension TSBlock {
     static func block(for index:Int) -> TSBlock {
-        guard let block = _TSBlockManager.default.block(for: index) else {
+        guard let block = TSBlockManager.default.block(for: index) else {
             fatalError("Error in finding TSBlock indexed \(index)")
         }
         return block
     }
     static func block(for idetifier:String) -> TSBlock {
-        guard let block = _TSBlockManager.default.block(for: idetifier) else {
+        guard let block = TSBlockManager.default.block(for: idetifier) else {
             fatalError("Error in finding TSBlock idetified \(idetifier)")
         }
         return block
-    }
-}
-
-// ================================================================
-// MARK: - _TSBlockManager (Private Class) -
-
-/// ブロックの管理を行います。
-private class _TSBlockManager {
-    /// シングルトン
-    static let `default` = _TSBlockManager()
-    
-    /// 登録済みブロック一覧
-    private var blocks = [TSBlock]()
-    
-    /// ブロックを登録します。
-    func registerBlock(_ block:TSBlock) {
-        self.blocks.append(block)
-    }
-    
-    func block(for identifier:String) -> TSBlock?{
-        return self.blocks.first(where: {$0.identifier == identifier})
-    }
-    func block(for index:Int) -> TSBlock? {
-        return self.blocks.first(where: {$0.index == index})
     }
 }
