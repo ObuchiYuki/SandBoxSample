@@ -1,5 +1,5 @@
 //
-//  TSItemBar.swift
+//  TSItemBarView.swift
 //  SandboxSample
 //
 //  Created by yuki on 2019/06/05.
@@ -7,108 +7,156 @@
 //
 
 import UIKit
-
-protocol TSItemBarDelegate {
-    
-}
+import RxSwift
+import RxCocoa
 
 /** SandBoxシーンでのアイテムバーを提供します。
- -- Usage --
+ 今の所アイテム4つ＋More1つで固定値
+ 拡張については今後考える。
  
+ 拡張時はTSItemBarInventoryについても拡張する必要あり。
  */
-class TSItemBar: UIImageView {
+class TSItemBarView: UIImageView {
     // ======================================================================== //
     // MARK: - TSItemBar Properties -
+    var itemBarInventory:TSItemBarInventory!
+    
+        /// インベントリを開く用ボタン
+    let moreitemImageButton = UIButton()
     
     // ======================================================================== //
     // MARK: - Private Properties -
-    private var _registeredInventory:TSInventry?
-    private var _selectedItemIndex = 0
+    
+    private let disposeBag = DisposeBag()
     
     // ================================== //
     // MARK: - UI Compornents -
-    /// アイテム保持用ボタン
-    private let itemImageButton1 = UIButton()
-    private let itemImageButton2 = UIButton()
-    private let itemImageButton3 = UIButton()
-    private let itemImageButton4 = UIButton()
     
-    /// インベントリを開くようボタン
-    private let moreitemImageButton = UIButton()
+    /// アイテム保持用ボタンs
+    private let itemImageButton1 = TSitemButton()
+    private let itemImageButton2 = TSitemButton()
+    private let itemImageButton3 = TSitemButton()
+    private let itemImageButton4 = TSitemButton()
     
     /// 選択中のアイテムを表すボタン
     private var itemSelectionFrame = UIImageView(image: #imageLiteral(resourceName: "TP_itembar_selected_frame"))
     
     /// 簡易使用用配列
-    private var itemImageButtons:[UIButton] {
-        return [itemImageButton1, itemImageButton2, itemImageButton3, itemImageButton4, moreitemImageButton]
+    private var itemImageButtons:[TSitemButton] {
+        return [itemImageButton1, itemImageButton2, itemImageButton3, itemImageButton4]
+    }
+    
+    private var allButtons:[UIButton] {
+        return itemImageButtons + [moreitemImageButton]
     }
     
     // ======================================================================== //
-    // MARK: - Public Methods -
+    // MARK: - Methods -
     
-    func registerInventry(_ inventory:TSInventry) {
-        self._registeredInventory = inventory
+    /// アイテムバーインベントリーをセットします。
+    func registerInventory(_ inventory:TSItemBarInventory) {
+        self.itemBarInventory = inventory
         
-        self.inventoryDidRegistered()
+        /// 選択アイテム番号への登録
+        self.itemBarInventory.selectedItemIndex.subscribe{[unowned self] in
+            $0.element.map(self.onSelectedItemIndexChanged)
+            
+        }.disposed(by: disposeBag)
+        
+        /// アイテムスタックへの登録
+        self.itemBarInventory.itemStacks.subscribe {[unowned self] in
+            $0.element.map(self.onItemStackChanged)
+            
+        }.disposed(by: disposeBag)
     }
     
     // ======================================================================== //
     // MARK: - Private Methods -
     
-    func inventoryDidRegistered() {
-        guard let inventory = _registeredInventory else {return}
-        for i in 0...4 {
-            if let stack = inventory.itemStacks.at(i) {
-                self.setItemImage(toButtonIndexed: i, image: stack.item.itemImage)
-            }
+    // ================================== //
+    // MARK: - Observer -
+    
+    /// アイテムスタック変更時
+    private func onItemStackChanged(to itemStacks:[TSItemStack]) {
+        for (i, stack) in itemStacks.enumerated() {
+            self.setItemStack(toButtonIndexed: i, stack)
         }
     }
     
-    func setItemImage(toButtonIndexed index:Int, image:UIImage) {
-        self.itemImageButtons[index].setImage(image, for: .normal)
+    /// 選択中アイテム変更時
+    private func onSelectedItemIndexChanged(to index:Int) {
+        moveSelectedFrame(to: index)
     }
     
-
+    // ================================== //
+    // MARK: - UI Settings -
     
-    override func setNeedsDisplay() {
-        isUserInteractionEnabled = true
+    /// ボタンにアイテムスタックを登録
+    private func setItemStack(toButtonIndexed index:Int,_ itemStack:TSItemStack) {
+        self.itemImageButtons[index].itemStack = itemStack
+    }
+    
+    /// ボタンに通知を登録します。
+    private func registerObserver(to button:UIButton, indexed index:Int) {
+        button.rx.tap.subscribe{[unowned self] _ in
+            self.onItemButtonPushed(button, indexed: index)
+            
+            }.disposed(by: disposeBag)
+    }
+    
+    private func setupItemButton(indexed index:Int,with button:UIButton) {
+        button.frame.origin = [4 + CGFloat(index) * 60, 4]
+        button.frame.size = [56, 53]
+        
+        self.addSubview(button)
+    }
+    
+    private func _setupView() {
+        self.isUserInteractionEnabled = true
         self.clipsToBounds = false
         // サイズ決定
         self.frame.size = [304, 61]
         self.image = #imageLiteral(resourceName: "TS_itembar_background")
         
+        self.moreitemImageButton.setImage(#imageLiteral(resourceName: "TP_itembar_icon_more"), for: .normal)
+        
         self.itemSelectionFrame.frame.size = [70, 67]
-        self.moveSelectedFrame(to: 0)
+
         // ボタン初期化
-        itemImageButtons.enumerated().forEach(setupItemButton(t:))
+        self.allButtons.enumerated().forEach{
+            setupItemButton(indexed: $0.offset, with: $0.element)
+        }
+        
+        self.itemImageButtons.enumerated().forEach{
+            registerObserver(to: $0.element, indexed: $0.offset)
+        }
         
         self.addSubview(itemSelectionFrame)
-        
-        
-        itemImageButton1.setImage(#imageLiteral(resourceName: "TP_item_thumb_japanese_house_1"), for: .normal)
-        itemImageButton2.setImage(#imageLiteral(resourceName: "TP_item_thumb_japanese_house_2"), for: .normal)
+        self.addSubview(moreitemImageButton)
     }
     
-    // ボタンのハンドラ
-    @objc func itemButtonDidPushed(_ sender:UIButton) {
-        guard let index = itemImageButtons.enumerated().first(where: {$0.element == sender})?.offset else {return}
-        moveSelectedFrame(to: index)
+    // ================================== //
+    // MARK: - UI Handler -
+    func onItemButtonPushed(_ button:UIButton, indexed index:Int) {
+        
+        self.itemBarInventory.selectedItemIndex.accept(index)
     }
+    
+    // ================================== //
+    // MARK: - Private APIs -
     
     private func moveSelectedFrame(to index:Int) {
         itemSelectionFrame.frame.origin = [-2 + CGFloat(index) * 60, -2]
     }
-    private func setupItemButton(t: ( offset:Int, element:UIButton)) {
-        let button = t.element
-        let index = t.offset
-        
-        button.frame.size = [55, 53]
-        button.addTarget(self, action: #selector(itemButtonDidPushed), for: .touchUpInside)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.frame.origin = [4 + CGFloat(index) * 60, 4]
-        
-        
-        self.addSubview(button)
+    
+    // ======================================================================== //
+    // MARK: - Constructor -
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        _setupView()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        _setupView()
     }
 }

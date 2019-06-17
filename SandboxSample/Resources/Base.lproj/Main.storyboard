@@ -10,20 +10,78 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Sandbox View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SandboxSample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TPSandboxViewController" customModule="SandboxSample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="SCNView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upu-fK-AHS">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TS_itembar_background" translatesAutoresizingMaskIntoConstraints="NO" id="ifF-Cc-MqR" customClass="TSItemBarView" customModule="SandboxSample" customModuleProvider="target">
+                                <rect key="frame" x="55" y="769" width="304" height="61"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="61" id="lxT-Fn-nYC"/>
+                                    <constraint firstAttribute="width" constant="304" id="xf7-ff-vzj"/>
+                                </constraints>
+                            </imageView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zHE-Dd-Qrk">
+                                <rect key="frame" x="55" y="127" width="304" height="594"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="594" id="bfe-nU-lia"/>
+                                    <constraint firstAttribute="width" constant="304" id="fBB-6l-FNj"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="ODH-vb-Y0j" kind="embed" id="VVE-fc-U7w"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ifF-Cc-MqR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KIU-7Z-xUQ"/>
+                            <constraint firstItem="zHE-Dd-Qrk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Q61-ed-e2j"/>
+                            <constraint firstItem="ifF-Cc-MqR" firstAttribute="top" secondItem="zHE-Dd-Qrk" secondAttribute="bottom" constant="48" id="TBl-yO-gpZ"/>
+                            <constraint firstAttribute="bottom" secondItem="upu-fK-AHS" secondAttribute="bottom" id="fbc-6H-9Bt"/>
+                            <constraint firstItem="ifF-Cc-MqR" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-32" id="gWe-Fi-moj"/>
+                            <constraint firstItem="upu-fK-AHS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lPp-Bn-c2T"/>
+                            <constraint firstItem="upu-fK-AHS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="vaV-qj-tsS"/>
+                            <constraint firstItem="upu-fK-AHS" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yez-sQ-0zj"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="constCollectionViewHeight" destination="bfe-nU-lia" id="Ic1-Xu-lH3"/>
+                        <outlet property="constCollectionViewWidth" destination="fBB-6l-FNj" id="g8e-9d-5lw"/>
+                        <outlet property="itemBar" destination="ifF-Cc-MqR" id="VQx-Pc-t4o"/>
+                        <outlet property="itemCollectionView" destination="zHE-Dd-Qrk" id="dlQ-2G-rw3"/>
+                        <outlet property="overLayView" destination="upu-fK-AHS" id="LS8-io-U3g"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="47.826086956521742" y="20.758928571428569"/>
         </scene>
+        <!--Item Collection View Controller-->
+        <scene sceneID="wU4-i1-5lh">
+            <objects>
+                <viewController id="ODH-vb-Y0j" customClass="TSItemCollectionViewController" customModule="SandboxSample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Qo-Gb-7Re">
+                        <rect key="frame" x="0.0" y="0.0" width="304" height="594"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="MoW-ni-CwW"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TNO-64-JXV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1194" y="220"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="TS_itembar_background" width="304" height="61"/>
+    </resources>
 </document>

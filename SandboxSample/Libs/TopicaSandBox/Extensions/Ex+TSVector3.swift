@@ -7,13 +7,17 @@
 //
 
 import SceneKit
+import simd
 
+// =============================================================== //
+// MARK: - Extension For SceneKit -
 extension TSVector3 {
-    // Initirize `TSVector3` from `SCNVector3`
+    
+    /// SCNVector3からTSvector3を初期化します。
+    /// TSvector3の元の範囲は、Int.min〜Int.maxの範囲です。
     public init(_ scnVector3:SCNVector3) {
-        self.x = Int(scnVector3.x)
-        self.y = Int(scnVector3.y)
-        self.z = Int(scnVector3.z)
+        self.simd = SIMD(scnVector3)
+        
     }
     
     // Converted TSVector3 to SCNVector3
@@ -21,22 +25,46 @@ extension TSVector3 {
         return SCNVector3(self.x, self.y, self.z)
     }
     
+    /// SIMD vector for SceneKit
+    public var scnSIMD:simd_float3 {
+        return simd_float3(simd)
+        
+    }
+    
+}
+
+// =============================================================== //
+// MARK: - Opetrators Extension -
+extension TSVector3 {
+    
     public static func + (left:TSVector3, right:TSVector3) -> TSVector3 {
-        return TSVector3(left.x + right.x, left.y + right.y, left.z + right.z)
+        return TSVector3(left.simd &+ right.simd)
     }
     public static func - (left:TSVector3, right:TSVector3) -> TSVector3 {
-        return TSVector3(left.x - right.x, left.y - right.y, left.z - right.z)
+        return TSVector3(left.simd &- right.simd)
     }
-    public static func * (left:TSVector3, right:Int) -> TSVector3 {
-        return TSVector3(left.x * right, left.y * right, left.z * right)
-    }
-    public static func / (left:TSVector3, right:Int) -> TSVector3 {
-        return TSVector3(left.x / right, left.y / right, left.z / right)
+    
+    public static func * (left:TSVector3, right:Int16) -> TSVector3 {
+        return TSVector3(left.simd &* SIMD(repeating: right))
     }
 }
+
 extension TSVector3 {
-    static let zero = TSVector3(0, 0, 0)
+    static public let zero = TSVector3(0, 0, 0)
     
     /// An unit size of TSVector3 which is `(x: 1, y: 1, z: 1)`
-    static let unit = TSVector3(1, 1, 1)
+    static public let unit = TSVector3(1, 1, 1)
+}
+
+extension TSVector3 {
+    var vector2:TSVector2 {
+        return TSVector2(x16, z16)
+    }
+}
+
+extension TSVector3:ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: Int16...) {
+        
+        self.simd = SIMD(elements)
+    }
 }

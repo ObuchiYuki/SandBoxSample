@@ -26,9 +26,10 @@ open class ESViewController: UIViewController {
         }
         return scnView
     }
+    public var gestureRecognizers = [UIGestureRecognizer]()
     
     /// 配下のSceneControllerです。
-    var sceneController:ESSceneController!
+    public var sceneController:ESSceneController!
     
     //==================================================================
     // MARK: - Private Properties -
@@ -76,6 +77,16 @@ open class ESViewController: UIViewController {
             self.scnView.allowsCameraControl = oldAllowsCameraControlStateForDragHitTest
         }
     }
+    
+    internal func addGestureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
+        self.scnView.addGestureRecognizer(gestureRecognizer)
+        self.gestureRecognizers.append(gestureRecognizer)
+    }
+    
+    internal func removeGestureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
+        self.scnView.removeGestureRecognizer(gestureRecognizer)
+        self.gestureRecognizers.remove(of: gestureRecognizer)
+    }
     //==================================================================
     // MARK: - Override Methods -
     
@@ -102,6 +113,8 @@ open class ESViewController: UIViewController {
         super.viewDidLoad()
         
         scnView.addGestureRecognizer(tapRayTraceGestureRecognizer)
+        
+        self.gestureRecognizers.append(tapRayTraceGestureRecognizer)
     }
     
     @objc private func handleRayTrace(_ gestureRecognize: UIGestureRecognizer) {

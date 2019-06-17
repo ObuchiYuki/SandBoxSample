@@ -24,9 +24,12 @@ open class ESSceneController :NSObject{
     }
     
     /// 親のSCNViewです。（参照は保持していません。）
-    var scnView:SCNView {
-        return _esViewController.scnView
+    public var scnView:SCNView {
+        return esViewController.scnView
     }
+    
+    /// 親のESViewControllerです。（参照は保持していません。）
+    public weak var esViewController:ESViewController!
     
     /// Sceneのカメラです。
     /// ノードとしてのカメラは、ESSceneController.cameraNodeに格納されます。
@@ -85,11 +88,15 @@ open class ESSceneController :NSObject{
     // ================================================================================ //
     // MARK: - Private Properties
     
-    /// 親のESViewControllerです。（参照は保持していません。）
-    private weak var _esViewController:ESViewController!
+    /// update更新用の`DisplayLink`です。
+    private lazy var _displayLink = CADisplayLink(target: self, selector: #selector(ESSceneController._update(displayLink:)))
     
-    // update更新用の`DisplayLink`です。
-    private lazy var _displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(ESSceneController._update(displayLink:)))
+    // ========================================= //
+    // MARK: - Flag -
+    /// viewDidAppear用
+    private var _firstDidAppearFlag = false
+    /// viewWillAppear用
+    private var _firstWillAppearFlag = false
     
     // ================================================================================ //
     // MARK: - Methods
@@ -97,16 +104,16 @@ open class ESSceneController :NSObject{
     /// 画面上を指が動いた時のヒットテストを有効にします。
     /// SCNView.allowCameraControle は自動的に false になります。
     public func enableDragHitTest() {
-        self._esViewController.enableDragHitTest()
+        self.esViewController.enableDragHitTest()
     }
     public func disablDragHitTest() {
-        self._esViewController.disablDragHitTest()
+        self.esViewController.disablDragHitTest()
     }
     public func addGestureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
-        self.scnView.addGestureRecognizer(gestureRecognizer)
+        self.esViewController.addGestureRecognizer(gestureRecognizer)
     }
     public func removeGustureRecognizer(_ gestureRecognizer:UIGestureRecognizer) {
-        self.scnView.removeGestureRecognizer(gestureRecognizer)
+        self.esViewController.removeGestureRecognizer(gestureRecognizer)
     }
     
     
@@ -132,6 +139,15 @@ open class ESSceneController :NSObject{
     }
     /// scene初期化後に呼び出されます。sceneにはSCNSceneが代入されています。
     open func sceneDidLoad(){}
+    
+    /// scene表示前に呼び出されます。
+    open func sceneWillAppear() {}
+    
+    /// scene表示後に呼び出されます。
+    open func sceneDidAppear() {}
+    
+    /// scene非表示後に呼び出されます。
+    open func sceneDidDisappear() {}
     
     // ===================================== //
     // MARK: - Rendering Methods -
@@ -197,8 +213,8 @@ open class ESSceneController :NSObject{
     open func touchesCanceled(at location:CGPoint) {}
     
     /// 次のESSceneControllerにシーンを渡します。
-    public final func present(to sceneController: ESSceneController,with transition:SKTransition,incomingPoint node:SCNNode?=nil, completion: (()->Void)?=nil) {
-        let view = _esViewController.scnView
+    public final func present(to sceneController: ESSceneController,with transition:SKTransition,incomingPoint node:SCNNode?=nil, completion: (()->Void)? = nil) {
+        let view = esViewController.scnView
         view.present(sceneController.scene, with: transition, incomingPointOfView: node, completionHandler: completion)
     }
     // ================================================================================ //
@@ -207,7 +223,7 @@ open class ESSceneController :NSObject{
     /// 初期化します。
     init(_ esViewController:ESViewController) {
         // メンバー初期化
-        self._esViewController = esViewController
+        self.esViewController = esViewController
         
         super.init()
         // scene読み込み
@@ -215,8 +231,8 @@ open class ESSceneController :NSObject{
         self.loadScene()
         self.sceneDidLoad()
         
-        self._esViewController.scnView.scene = scene
-        self._esViewController.scnView.delegate = self
+        self.esViewController.scnView.scene = scene
+        self.esViewController.scnView.delegate = self
         
         self.scene.physicsWorld.contactDelegate = self
         
@@ -228,6 +244,7 @@ open class ESSceneController :NSObject{
     }
     
     deinit {
+        self.sceneDidDisappear()
         // update呼び出し解除
         self._displayLink.remove(from: .main, forMode: .common)
     }
@@ -243,9 +260,17 @@ extension ESSceneController: SCNSceneRendererDelegate{
         self.didSimulatePhysics()
     }
     public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        if !_firstWillAppearFlag {
+            _firstWillAppearFlag = true
+            self.sceneDidAppear()
+        }
         self.willRenderScene()
     }
     public func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        if !_firstDidAppearFlag {
+            _firstDidAppearFlag = true
+            self.sceneDidAppear()
+        }
         self.didRenderScene()
     }
 }
